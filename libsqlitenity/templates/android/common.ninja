@@ -1,0 +1,10 @@
+include templates/reset.ninja
+
+clang     = $android-clang
+llvm-link = $android-llvm-link
+llvm-ar   = $android-llvm-ar
+linker    = $android-linker
+
+sysroot = $android-sysroot
+suffix  = so
+prefix  = lib

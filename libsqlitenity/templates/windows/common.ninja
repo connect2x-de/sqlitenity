@@ -1,0 +1,15 @@
+include templates/reset.ninja
+
+clang     = $host-clang
+llvm-link = $host-llvm-link
+llvm-ar   = $host-llvm-ar
+linker    = $windows-linker
+
+sysroot = $windows-sysroot
+suffix  = dll
+prefix  =
+
+cflags-sqlite3        = -Wno-macro-redefined
+cflags-sqlitenity-jni = $cflags-sqlitenity-jni-windows
+
+ldflags = -Wl,/Brepro,/incremental:no

@@ -1,0 +1,47 @@
+rule cc
+  command = $clang --target=$target --sysroot=$sysroot $cflags $opt --compile -emit-llvm --output $out $in
+  description = CLANG $out
+
+rule bc-link
+  command = $llvm-link --internalize --only-needed $in -o $out
+  description = LLVM-LINK $out
+
+rule cc-obj
+  command = $clang --target=$target --sysroot=$sysroot --compile $opt --output $out $in
+  description = CLANG $out
+
+rule ar
+  command = $llvm-ar rcsD $out $in
+  description = LLVM-AR $out
+
+rule link
+  command = $clang --target=$target --sysroot=$sysroot $ldflags $opt --ld-path=$linker --shared --output $out $in
+  description = LINK $out
+
+rule download-jni-headers
+  command = nu -c 'use util; util download-jni-headers $out; util deps $out $in'
+  description = DOWNLOAD $out
+  depfile = $out.d
+  deps    = gcc
+
+rule download-sqlite3mc
+  command = nu -c 'use util; util download-sqlite3mc $out; util deps $out $in'
+  description = DOWNLOAD $out
+  depfile = $out.d
+  deps    = gcc
+
+rule extract-sqlite3mc
+  command = nu -c 'use util; util extract-sqlite3mc $in $out; util deps $out $in'
+  description = EXTRACT $in $out
+  depfile = $out.d
+  deps    = gcc
+
+rule amalgamate
+  command = nu -c 'use util; util amalgamate $script $config $source $out; util deps $out $script $config $source'
+  description = AMALGAMATE $out
+  depfile = $out.d
+  deps    = gcc
+
+rule remove
+  command = rm -rf $files
+  description = REMOVE $files

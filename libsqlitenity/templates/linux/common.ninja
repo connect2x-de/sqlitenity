@@ -1,0 +1,12 @@
+include templates/reset.ninja
+
+clang     = $host-clang
+llvm-link = $host-llvm-link
+llvm-ar   = $host-llvm-ar
+linker    = $linux-linker
+
+sysroot = $linux-sysroot
+suffix  = so
+prefix  = lib
+
+cflags-sqlitenity-jni = $cflags-sqlitenity-jni-linux

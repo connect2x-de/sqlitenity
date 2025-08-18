@@ -1,0 +1,10 @@
+build bitcode/$ktarget/sqlitenity_jni.bc: cc sqlitenity_jni.c | sqlitenity.h deps/openjdk
+  cflags = $cflags $cflags-sqlitenity-jni
+
+build bitcode/$ktarget/sqlitenity_jni.all.bc: bc-link bitcode/$ktarget/sqlitenity_jni.bc bitcode/$ktarget/sqlitenity.bc bitcode/$ktarget/sqlite3.bc
+
+build obj/$ktarget/sqlitenity_jni.o: cc-obj bitcode/$ktarget/sqlitenity_jni.all.bc
+
+build lib/$jniDir/${prefix}sqlitenity.$suffix: link obj/$ktarget/sqlitenity_jni.o
+
+default lib/$jniDir/${prefix}sqlitenity.$suffix

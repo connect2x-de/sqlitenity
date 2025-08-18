@@ -1,0 +1,12 @@
+clang     = 
+llvm-link =
+llvm-ar   =
+linker    =
+
+ktarget =
+target  = 
+sysroot =
+suffix  =
+
+cflags_sqlite3        =
+cflags_sqlitenity_jni =

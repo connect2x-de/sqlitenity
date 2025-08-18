@@ -1,0 +1,7 @@
+include templates/linux/common.ninja
+
+jniDir = jvm/natives/linux-x86-64
+ktarget = linux_x64
+target  = x86_64-unknown-linux-gnu
+
+subninja templates/compile.ninja

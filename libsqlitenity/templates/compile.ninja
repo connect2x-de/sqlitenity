@@ -1,0 +1,2 @@
+include templates/native.ninja
+include templates/jni.ninja

@@ -1,0 +1,4 @@
+subninja templates/android/android_x64.ninja
+subninja templates/android/android_arm64.ninja
+subninja templates/android/android_x86.ninja
+subninja templates/android/android_arm32.ninja

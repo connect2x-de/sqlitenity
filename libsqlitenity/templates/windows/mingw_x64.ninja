@@ -1,0 +1,7 @@
+include templates/windows/common.ninja
+
+jniDir = jvm/natives/win32-x86-64
+ktarget = mingw_x64
+target  = x86_64-w64-windows-gnu
+
+subninja templates/compile.ninja

@@ -1,0 +1,6 @@
+include templates/ios/common.ninja
+
+ktarget = ios_arm64
+target  = arm64-apple-ios14.0
+
+subninja templates/native.ninja

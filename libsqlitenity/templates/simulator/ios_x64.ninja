@@ -1,0 +1,6 @@
+include templates/simulator/common.ninja
+
+ktarget = ios_x64
+target  = x86_64-apple-ios14.0.0-simulator
+
+subninja templates/native.ninja

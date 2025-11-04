@@ -1,0 +1,112 @@
+cache-url = "https://cache-redirector.jetbrains.com/download.jetbrains.com/kotlin/native"
+directory = "deps/sysroot"
+deps = "deps"
+
+[sqlite3mc]
+repository = "https://github.com/utelle/SQLite3MultipleCiphers"
+version = "2.2.4"
+sha256 = "6563edddcc218f2153a210ff31a99669b94afb4f1f697446635c4f422134d76d"
+
+[jdk]
+repository = "https://raw.githubusercontent.com/openjdk/jdk/"
+version = "jdk-11-ga"
+files = [
+    { source = "src/java.base/share/native/include/jni.h"     , sha256 = "ff6edf23a412719911a58f7d7c317d5d0995e0a40dcfaf441fb7edc5f9ac73f2", target = "include/jni.h" },
+    { source = "src/java.base/unix/native/include/jni_md.h"   , sha256 = "48888b52ef525a8c92985b501162b2e4ca7bb2a742456e4c053c1417e8ccfff2", target = "include/unix/jni_md.h" },
+    { source = "src/java.base/windows/native/include/jni_md.h", sha256 = "4c06961075d5e4544892b49061e8674db8663d1757cbb56585ae5e3cc5d2b5e5", target = "include/windows/jni_md.h" },
+]
+
+[ndk]
+version = "r29"
+[ndk.sha256]
+linux = "4abbbcdc842f3d4879206e9695d52709603e52dd68d3c1fff04b3b5e7a308ecf"
+darwin = "ce5e4b100ec5fe5be4eb3edcb2c02528824ff9cda3860f5304619be6c3da34d3"
+
+[[sysroots]]
+source = "x86_64-unknown-linux-gnu-gcc-8.3.0-glibc-2.19-kernel-4.9-2"
+sha256 = "a048397d50fb5a2bd6cc0f89d5a30e0b8ff0373ebff9c1d78ce1f1fb7f185a50"
+
+paths = [
+    "lib/gcc/x86_64-unknown-linux-gnu/",
+    "x86_64-unknown-linux-gnu/include/c++",
+    "x86_64-unknown-linux-gnu/sysroot/lib/",
+    "x86_64-unknown-linux-gnu/sysroot/usr/lib/",
+    "x86_64-unknown-linux-gnu/sysroot/usr/include/",
+]
+
+linker_scripts = [
+    "x86_64-unknown-linux-gnu/lib/libc.so",
+    "x86_64-unknown-linux-gnu/lib/libpthread.so",
+]
+
+[[sysroots.mappings]]
+sources = [ 
+    "x86_64-unknown-linux-gnu/sysroot/usr/lib",
+    "x86_64-unknown-linux-gnu/sysroot/usr/include",
+    "x86_64-unknown-linux-gnu/sysroot/lib",
+]
+target = "x86_64-unknown-linux-gnu"
+
+[[sysroots.mappings]]
+sources = [ 
+    "x86_64-unknown-linux-gnu/include/c++",
+]
+target = "include"
+
+
+
+[[sysroots]]
+source = "aarch64-unknown-linux-gnu-gcc-8.3.0-glibc-2.25-kernel-4.9-2"
+sha256 = "a026ede10b5dc2f2dcba91115338040ba62558ca14cf1a18cfba50768b245385"
+
+paths = [
+    "lib/gcc/aarch64-unknown-linux-gnu/",
+    "aarch64-unknown-linux-gnu/include/c++",
+    "aarch64-unknown-linux-gnu/sysroot/lib/",
+    "aarch64-unknown-linux-gnu/sysroot/usr/lib/",
+    "aarch64-unknown-linux-gnu/sysroot/usr/include/",
+]
+
+linker_scripts = [
+    "aarch64-unknown-linux-gnu/lib/libc.so",
+    "aarch64-unknown-linux-gnu/lib/libpthread.so",
+]
+
+[[sysroots.mappings]]
+sources = [ 
+    "aarch64-unknown-linux-gnu/sysroot/usr/lib",
+    "aarch64-unknown-linux-gnu/sysroot/usr/include",
+    "aarch64-unknown-linux-gnu/sysroot/lib",
+]
+target = "aarch64-unknown-linux-gnu"
+
+[[sysroots.mappings]]
+sources = [ 
+    "aarch64-unknown-linux-gnu/include/c++",
+]
+target = "include"
+
+
+[[sysroots]]
+source = "msys2-mingw-w64-x86_64-2"
+sha256 = "50b7c3b4c91661753e2c23de00d4d7d113264c947f7ec6836eac085e16f602e8"
+
+paths = [
+    "lib/gcc/x86_64-w64-mingw32/",
+    "include/c++/",
+    "x86_64-w64-mingw32/lib/",
+    "x86_64-w64-mingw32/include/",
+]
+
+[[sysroots.mappings]]
+sources = [
+    "lib/gcc/x86_64-w64-mingw32/9.2.0",
+]
+target = "lib/gcc/x86_64-w64-windows-gnu"
+
+[[sysroots.mappings]]
+sources = [
+    "x86_64-w64-mingw32/include",
+    "x86_64-w64-mingw32/lib",
+]
+target = "x86_64-w64-windows-gnu"

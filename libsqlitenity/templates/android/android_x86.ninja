@@ -1,0 +1,7 @@
+include templates/android/common.ninja
+
+jniDir = android/x86
+ktarget = android_x86
+target  = i686-linux-android21
+
+subninja templates/compile.ninja

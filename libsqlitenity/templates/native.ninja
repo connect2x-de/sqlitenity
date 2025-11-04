@@ -1,0 +1,12 @@
+build bitcode/$ktarget/sqlite3.bc: cc deps/sqlite3mc/include/sqlite3.c
+  cflags = $cflags $cflags-sqlite3
+build bitcode/$ktarget/sqlitenity.bc: cc sqlitenity.c | sqlitenity.h deps/sqlite3mc/include/sqlite3.h
+  cflags = $cflags -Ideps/sqlite3mc/include
+
+build bitcode/$ktarget/sqlitenity.all.bc: bc-link bitcode/$ktarget/sqlitenity.bc bitcode/$ktarget/sqlite3.bc
+
+build obj/$ktarget/sqlitenity.o: cc-obj bitcode/$ktarget/sqlitenity.all.bc
+
+build archive/$ktarget/libsqlitenity.a: ar obj/$ktarget/sqlitenity.o
+
+default archive/$ktarget/libsqlitenity.a

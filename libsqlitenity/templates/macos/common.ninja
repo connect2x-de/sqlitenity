@@ -1,0 +1,13 @@
+include templates/reset.ninja
+
+clang     = $host-clang
+llvm-link = $host-llvm-link
+llvm-ar   = $host-llvm-ar
+linker    = $apple-linker
+
+sysroot = $macos-sysroot
+suffix  = dylib
+prefix  = lib
+
+ldflags = -Wl,-platform_version,macos,11.3,$macos-sdk-version
+cflags-sqlitenity-jni = $cflags-sqlitenity-jni-darwin

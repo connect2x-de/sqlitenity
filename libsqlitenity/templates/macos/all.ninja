@@ -1,0 +1,2 @@
+subninja templates/macos/macos_x64.ninja
+subninja templates/macos/macos_arm64.ninja

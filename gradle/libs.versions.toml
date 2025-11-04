@@ -1,0 +1,20 @@
+[versions]
+kotlin = "2.2.20"
+android = "8.13.0"
+ktfmt = "0.24.0"
+sqlite = "2.6.1"
+androidxTestRunner = "1.7.0"
+detekt = "1.23.8"
+publish = "0.34.0"
+
+[libraries]
+kotlin-test = { module = "org.jetbrains.kotlin:kotlin-test", version.ref = "kotlin" }
+androidx-sqlite = { module = "androidx.sqlite:sqlite", version.ref = "sqlite" }
+androidx-test-runner = { module = "androidx.test:runner", version.ref = "androidxTestRunner" }
+
+[plugins]
+kotlin-multiplatform = { id = "org.jetbrains.kotlin.multiplatform", version.ref = "kotlin" }
+android-multiplatform-library = { id = "com.android.kotlin.multiplatform.library", version.ref = "android" }
+ktfmt = { id = "com.ncorti.ktfmt.gradle", version.ref = "ktfmt" }
+detekt = { id = "io.gitlab.arturbosch.detekt", version.ref = "detekt" }
+publish = { id = "com.vanniktech.maven.publish", version.ref = "publish" }

@@ -1,0 +1,2 @@
+subninja templates/linux/linux_x64.ninja
+subninja templates/linux/linux_arm64.ninja

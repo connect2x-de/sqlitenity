@@ -1,0 +1,7 @@
+include templates/macos/common.ninja
+
+jniDir = jvm/natives/darwin-aarch64
+ktarget = macos_arm64
+target  = arm64-apple-macosx11.3
+
+subninja templates/compile.ninja

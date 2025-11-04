@@ -1,0 +1,9 @@
+include templates/reset.ninja
+
+clang     = $host-clang
+llvm-link = $host-llvm-link
+llvm-ar   = $host-llvm-ar
+
+sysroot = $iphonesimulator-sysroot
+
+cflags-sqlite3 = -Wno-#warnings

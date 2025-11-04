@@ -1,0 +1,7 @@
+include templates/android/common.ninja
+
+jniDir = android/armeabi-v7a
+ktarget = android_arm32
+target  = armv7-linux-android21
+
+subninja templates/compile.ninja

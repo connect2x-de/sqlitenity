@@ -1,0 +1,2 @@
+subninja templates/simulator/ios_x64.ninja
+subninja templates/simulator/ios_simulator_arm64.ninja

@@ -1,0 +1,63 @@
+host-clang = $${CLANG:-clang}
+
+host-llvm-link = $${LLVM_LINK:-llvm-link}
+host-llvm-ar   = $${LLVM_AR:-llvm-ar}
+
+android-toolchain = $$(echo $$ANDROID_NDK_HOME/toolchains/llvm/prebuilt/*)
+android-clang     = $android-toolchain/bin/clang
+android-llvm-link = $android-toolchain/bin/llvm-link
+android-llvm-ar   = $android-toolchain/bin/llvm-ar
+
+linux-linker   = $${LD_LLD:-ld.lld}
+windows-linker = $${LD_LLD:-ld.lld}
+apple-linker   = $${LD64_LLD:-ld64.lld}
+android-linker = $android-toolchain/bin/ld.lld
+
+linux-sysroot               = $${DESKTOP_SYSROOT:-sysroot}
+windows-sysroot             = $${DESKTOP_SYSROOT:-sysroot}
+android-sysroot             = $android-toolchain/sysroot
+macos-sysroot               = $${MACOSX_SDK_HOME:-$$(xcrun --sdk macosx --show-sdk-path)}
+macos-sdk-version           = $${MACOSX_SDK_VERSION:-$$(xcrun --sdk macosx --show-sdk-version)}
+iphoneos-sysroot            = $${IPHONEOS_SDK_HOME:-$$(xcrun --sdk iphoneos --show-sdk-path)}
+iphoneos-sdk-version        = $${IPHONEOS_SDK_VERSION:-$$(xcrun --sdk iphoneos --show-sdk-version)}
+iphonesimulator-sysroot     = $${IPHONESIMULATOR_SDK_HOME:-$$(xcrun --sdk iphonesimulator --show-sdk-path)}
+iphonesimulator-sdk-version = $${IPHONESIMULATOR_SDK_VERSION:-$$(xcrun --sdk iphonesimulator --show-sdk-version)}
+
+cflags-sqlitenity-jni-linux   = -Ideps/openjdk/include -Ideps/openjdk/include/unix
+cflags-sqlitenity-jni-darwin  = -Ideps/openjdk/include -Ideps/openjdk/include/unix
+cflags-sqlitenity-jni-windows = -Ideps/openjdk/include -Ideps/openjdk/include/windows
+
+opt = -O3
+
+include templates/rules.ninja
+
+build deps/openjdk: download-jni-headers
+build deps/SQLite3MultipleCiphers.tar.gz: download-sqlite3mc
+build deps/SQLite3MultipleCiphers: extract-sqlite3mc deps/SQLite3MultipleCiphers.tar.gz
+
+build deps/sqlite3mc/include/sqlite3.c: amalgamate || deps/SQLite3MultipleCiphers
+    script = deps/SQLite3MultipleCiphers/scripts/amalgamate.py
+    config = deps/SQLite3MultipleCiphers/scripts/sqlite3mc.c.json
+    source = deps/SQLite3MultipleCiphers/src
+
+build deps/sqlite3mc/include/sqlite3.h: amalgamate || deps/SQLite3MultipleCiphers
+    script = deps/SQLite3MultipleCiphers/scripts/amalgamate.py
+    config = deps/SQLite3MultipleCiphers/scripts/sqlite3mc.h.json
+    source = deps/SQLite3MultipleCiphers/src
+
+build all: phony
+
+default all
+
+build clean: remove
+  files = bitcode obj archive lib
+
+build distclean: remove clean
+  files = deps
+
+subninja templates/linux/all.ninja
+subninja templates/windows/all.ninja
+subninja templates/android/all.ninja
+subninja templates/ios/all.ninja
+subninja templates/simulator/all.ninja
+subninja templates/macos/all.ninja

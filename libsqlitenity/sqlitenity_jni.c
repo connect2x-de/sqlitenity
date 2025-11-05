@@ -1,14 +1,11 @@
-
-// #define TRIXNITY_SQLITE3_API  __attribute__((always_inline)) __attribute__((visibility("hidden")))
-
 #include "sqlitenity.h"
 
 #include "jni.h"
 
 #include <stdio.h>
 
-#define JAVA(name) JNICALL Java_net_folivo_sqlitenity_TrixnitySQLiteBindingsKt_##name
-#define JAVACRITICAL(name) JavaCritical_net_folivo_sqlitenity_TrixnitySQLiteBindingsKt_##name
+#define JAVA(name) JNICALL Java_net_folivo_sqlitenity_raw_bindings_BindingsKt_##name
+#define JAVACRITICAL(name) JavaCritical_net_folivo_sqlitenity_raw_bindings_BindingsKt_##name
 
 #define MODE_WRITE 0
 #define MODE_READ JNI_ABORT
@@ -211,7 +208,7 @@ static jstring getSystemProperty(JNIEnv* env, const char* name) {
 }
 
 
-jint JNI_OnLoad(JavaVM *vm, void *reseved) {
+JNIEXPORT jint JNI_OnLoad(JavaVM *vm, void *reserved) {
   JNIEnv *env;
   jstring jClazzName;
   const char* clazzName;

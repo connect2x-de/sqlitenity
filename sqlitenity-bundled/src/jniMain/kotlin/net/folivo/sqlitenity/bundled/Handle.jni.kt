@@ -1,7 +1,9 @@
 package net.folivo.sqlitenity.bundled
 
 import java.nio.file.Files
+import java.nio.file.Path
 import java.nio.file.StandardCopyOption
+import kotlin.reflect.KClass
 
 private sealed class Os(val name: String) {
     data object Win32 : Os("win32")
@@ -54,6 +56,12 @@ private sealed class Architecture(val name: String) {
     }
 }
 
+internal expect fun <T : Any> KClass<T>.copy(
+    source: String,
+    target: Path,
+    option: StandardCopyOption,
+)
+
 internal object JvmLoader {
     @Suppress("UnsafeDynamicallyLoadedCode")
     fun load(name: String) {
@@ -73,17 +81,13 @@ internal object JvmLoader {
                 Os.Darwin -> "dylib"
             }
 
-        val targetPath = Files.createTempFile(name, "")
+        val targetPath = Files.createTempFile("$prefix$name", ".$suffix")
         val resourcePath = "/natives/${os.name}-${arch.name}/$prefix$name.$suffix"
 
-        val resource = this::class.java.getResourceAsStream(resourcePath)
-
-        checkNotNull(resource) { "Could not find $resourcePath in resources" }
-
-        resource.use { Files.copy(it, targetPath, StandardCopyOption.REPLACE_EXISTING) }
+        this::class.copy(resourcePath, targetPath, StandardCopyOption.REPLACE_EXISTING)
 
         System.load(targetPath.toString())
 
-        Files.deleteIfExists(targetPath)
+        targetPath.toFile().deleteOnExit()
     }
 }

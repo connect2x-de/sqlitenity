@@ -4,8 +4,8 @@
 
 #include <stdio.h>
 
-#define JAVA(name) JNICALL Java_net_folivo_sqlitenity_raw_bindings_BindingsKt_##name
-#define JAVACRITICAL(name) JavaCritical_net_folivo_sqlitenity_raw_bindings_BindingsKt_##name
+#define JAVA(name) JNICALL Java_de_connect2x_sqlitenity_interop_BindingsKt_##name
+#define JAVACRITICAL(name) JavaCritical_de_connect2x_sqlitenity_interop_BindingsKt_##name
 
 #define MODE_WRITE 0
 #define MODE_READ JNI_ABORT

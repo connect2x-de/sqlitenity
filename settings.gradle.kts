@@ -41,12 +41,12 @@ include("sqlitenity-compat")
 enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
 
 plugins {
-    id("net.folivo.sqlitenity.conventions")
+    id("de.connect2x.sqlitenity.conventions")
     id("org.gradle.toolchains.foojay-resolver-convention") version "1.0.0"
 }
 
 conventions {
-    group = "net.folivo"
+    group = "de.connect2x"
     version = "0.0.3"
 
     android {

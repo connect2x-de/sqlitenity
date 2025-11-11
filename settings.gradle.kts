@@ -47,7 +47,7 @@ plugins {
 
 conventions {
     group = "de.connect2x"
-    version = "0.0.3"
+    version = "0.0.4"
 
     android {
         compileSdk = 36

@@ -47,7 +47,7 @@ plugins {
 
 conventions {
     group = "net.folivo"
-    version = "0.0.2"
+    version = "0.0.3"
 
     android {
         compileSdk = 36

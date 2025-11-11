@@ -1,8 +1,8 @@
+import de.connect2x.sqlitenity.conventions.ConventionsExtension
 import java.time.Instant
 import java.time.ZoneOffset
 import java.time.format.DateTimeFormatter
 import kotlin.time.ExperimentalTime
-import net.folivo.sqlitenity.conventions.ConventionsExtension
 import org.gradle.api.Project
 import org.gradle.api.internal.GradleInternal
 import org.gradle.api.provider.Provider

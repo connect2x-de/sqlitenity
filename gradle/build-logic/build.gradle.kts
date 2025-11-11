@@ -21,9 +21,9 @@ detekt {
 gradlePlugin {
     plugins {
         register("conventions") {
-            id = "net.folivo.sqlitenity.conventions"
+            id = "de.connect2x.sqlitenity.conventions"
             version = "builtin"
-            implementationClass = "net.folivo.sqlitenity.conventions.SettingsConventionsPlugin"
+            implementationClass = "de.connect2x.sqlitenity.conventions.SettingsConventionsPlugin"
         }
     }
 }

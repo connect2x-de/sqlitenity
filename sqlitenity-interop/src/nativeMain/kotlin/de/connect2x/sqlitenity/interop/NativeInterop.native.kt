@@ -8,6 +8,7 @@ import kotlinx.cinterop.COpaque
 import kotlinx.cinterop.ExperimentalForeignApi
 import kotlinx.cinterop.LongVar
 import kotlinx.cinterop.Pinned
+import kotlinx.cinterop.UnsafeNumber
 import kotlinx.cinterop.addressOf
 import kotlinx.cinterop.interpretCPointer
 import kotlinx.cinterop.pin
@@ -76,9 +77,11 @@ actual class InteropScope actual constructor() : AutoCloseable {
         return pinned
     }
 
-    @PublishedApi internal inline fun ByteArray.ptr() = save().addressOf(0).rawValue
+    @PublishedApi
+    internal inline fun ByteArray.ptr() = if (isEmpty()) EmptyPtr else save().addressOf(0).rawValue
 
-    @PublishedApi internal inline fun CharArray.ptr() = save().addressOf(0).rawValue
+    @PublishedApi
+    internal inline fun CharArray.ptr() = if (isEmpty()) EmptyPtr else save().addressOf(0).rawValue
 
     @PublishedApi
     internal inline fun NativePointer.ptr() =
@@ -86,3 +89,11 @@ actual class InteropScope actual constructor() : AutoCloseable {
 }
 
 actual typealias OutOfMemoryError = OutOfMemoryError
+
+// This seems extremely hacky but SQLite needs a valid pointer to store empty values,
+// typically in C you would use the Empty stack allocated string: ""
+// Null pointers are semantically not equivalent to empty arrays
+
+@PublishedApi
+@OptIn(ExperimentalForeignApi::class, UnsafeNumber::class)
+internal val EmptyPtr = ByteArray(1) { 0 }.pin().addressOf(0).rawValue

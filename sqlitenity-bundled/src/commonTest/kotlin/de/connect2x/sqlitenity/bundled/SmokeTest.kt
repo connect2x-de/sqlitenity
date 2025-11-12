@@ -1,5 +1,6 @@
 package de.connect2x.sqlitenity.bundled
 
+import de.connect2x.sqlitenity.api.ColumnType
 import de.connect2x.sqlitenity.api.Step
 import kotlin.contracts.ExperimentalContracts
 import kotlin.contracts.InvocationKind
@@ -8,6 +9,7 @@ import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertFalse
 import kotlin.test.assertTrue
+import kotlin.test.fail
 
 class SmokeTest {
 
@@ -41,6 +43,9 @@ class SmokeTest {
         listOf(
             User("max@mustermann.com", "Max Mustermann", 28, 4.7),
             User("alice@example.com", "Alice Example", 43, 2.5),
+            User("", "Me Myself and I", 0, 0.0),
+            User("my@email.com", null, 1, 0.0),
+            User("myother@email.com", "", 1, 0.0),
         )
 
     val driver = BundledSQLitenityDriver()
@@ -61,7 +66,7 @@ class SmokeTest {
 
         for (user in users) {
             createUsers.bindText(1, user.email)
-            createUsers.bindText(2, user.name)
+            if (user.name != null) createUsers.bindText(2, user.name) else createUsers.bindNull(2)
             createUsers.bindLong(3, user.age)
             createUsers.bindDouble(4, user.ranking)
             assertEquals(Step.Done, createUsers.step())
@@ -83,7 +88,15 @@ class SmokeTest {
         for (user in users) {
             assertEquals(Step.Row, selectUsers.step())
             assertEquals(user.email, selectUsers.getText(0))
-            assertEquals(user.name, selectUsers.getText(1))
+
+            val name =
+                when (val columnType = selectUsers.getColumnType(1)) {
+                    ColumnType.Null -> null
+                    ColumnType.Text -> selectUsers.getText(1)
+                    else -> fail("Unexpected column type $columnType")
+                }
+
+            assertEquals(user.name, name)
             assertEquals(user.age, selectUsers.getLong(2))
             assertEquals(user.ranking, selectUsers.getDouble(3))
         }
@@ -95,7 +108,7 @@ class SmokeTest {
         selectUsers.close()
     }
 
-    data class User(val email: String, val name: String, val age: Long, val ranking: Double)
+    data class User(val email: String, val name: String?, val age: Long, val ranking: Double)
 }
 
 class DeferScope : AutoCloseable {

@@ -46,7 +46,7 @@ plugins {
 }
 
 conventions {
-    group = "de.connect2x"
+    group = "de.connect2x.sqlitenity"
     version = "0.0.5"
 
     android {
@@ -59,6 +59,34 @@ conventions {
     }
 
     publishing {
-        registry = "https://gitlab.com/api/v4/projects/72850047/packages/maven"
+        pom {
+            name = "SQLitenity"
+            description = "Kotlin Multiplatform SQLite bindings"
+            url = "https://gitlab.com/connect2x/sqlitenity"
+            inceptionYear = "2025"
+
+            licenses {
+                license {
+                    name = "Apache License 2.0"
+                    url = "https://www.apache.org/licenses/LICENSE-2.0"
+                }
+            }
+
+            developers {
+                developer {
+                    id = "connect2x"
+                    name = "connect2x GmbH"
+                    url = "https://gitlab.com/connect2x"
+                }
+                developer {
+                    id = "fhilgers"
+                    name = "Felix Hilgers"
+                }
+            }
+
+            scm {
+                url = "https://gitlab.com/connect2x/sqlitenity"
+            }
+        }
     }
 }

@@ -1,7 +1,35 @@
 complexity:
   TooManyFunctions:
     active: false
+  ComplexInterface:
+    active: false
 
 style:
   MagicNumber:
+    active: false
+  MultilineRawStringIndentation:
+    active: false
+  UseIfInsteadOfWhen:
+    active: false
+  ExpressionBodySyntax:
+    active: false
+  ClassOrdering:
+    active: false
+
+comments:
+  AbsentOrWrongFileLicense:
+    active: false
+  UndocumentedPublicFunction:
+    active: false
+  UndocumentedPublicClass:
+    active: false
+  UndocumentedPublicProperty:
+    active: false
+
+naming:
+  FunctionNameMinLength:
+    active: false
+
+empty-blocks:
+  EmptyKotlinFile:
     active: false

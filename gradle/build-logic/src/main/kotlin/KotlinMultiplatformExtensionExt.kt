@@ -1,4 +1,4 @@
-@file:Suppress("UnstableApiUsage")
+@file:Suppress("UnstableApiUsage", "MissingPackageDeclaration")
 
 import com.android.build.api.dsl.androidLibrary
 import org.gradle.api.NamedDomainObjectContainer

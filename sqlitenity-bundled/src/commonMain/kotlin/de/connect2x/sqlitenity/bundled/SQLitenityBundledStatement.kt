@@ -27,7 +27,7 @@ import de.connect2x.sqlitenity.bindings.step
 import kotlin.concurrent.atomics.AtomicBoolean
 import kotlin.concurrent.atomics.ExperimentalAtomicApi
 
-class BundledSQLitenityStatement internal constructor(private val statement: Statement) :
+class SQLitenityBundledStatement internal constructor(private val statement: Statement) :
     SQLitenityStatement {
 
     private val isClosed = AtomicBoolean(false)

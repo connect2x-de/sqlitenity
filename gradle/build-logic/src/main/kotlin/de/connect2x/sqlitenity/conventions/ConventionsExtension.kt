@@ -3,6 +3,7 @@ package de.connect2x.sqlitenity.conventions
 import javax.inject.Inject
 import org.gradle.api.model.ObjectFactory
 import org.gradle.api.provider.Property
+import org.gradle.api.publish.maven.MavenPom
 import org.gradle.kotlin.dsl.property
 
 open class ConventionsExtension @Inject constructor(objects: ObjectFactory) {
@@ -30,6 +31,14 @@ open class ConventionsExtension @Inject constructor(objects: ObjectFactory) {
     }
 
     open class Publishing @Inject constructor(objects: ObjectFactory) {
-        val registry: Property<String> = objects.property()
+        fun pom(configure: MavenPom.() -> Unit) {
+            pomActions += configure
+        }
+
+        private val pomActions = mutableListOf<MavenPom.() -> Unit>()
+
+        internal fun configurePom(pom: MavenPom) {
+            pomActions.forEach { pom.it() }
+        }
     }
 }

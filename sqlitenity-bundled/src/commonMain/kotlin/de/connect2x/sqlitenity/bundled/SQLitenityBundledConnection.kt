@@ -10,8 +10,8 @@ import de.connect2x.sqlitenity.bindings.prepare
 import kotlin.concurrent.atomics.AtomicBoolean
 import kotlin.concurrent.atomics.ExperimentalAtomicApi
 
-class BundledSQLitenityConnection internal constructor(private val connection: Connection) :
-    SQLitenityConnection<BundledSQLitenityStatement> {
+class SQLitenityBundledConnection internal constructor(private val connection: Connection) :
+    SQLitenityConnection<SQLitenityBundledStatement> {
 
     private val isClosed = AtomicBoolean(false)
 
@@ -22,10 +22,10 @@ class BundledSQLitenityConnection internal constructor(private val connection: C
             return rethrow { autoCommit(connection) }
         }
 
-    override fun prepare(sql: String): BundledSQLitenityStatement {
+    override fun prepare(sql: String): SQLitenityBundledStatement {
         check(!isClosed.load())
 
-        return BundledSQLitenityStatement(rethrow { prepare(connection, sql) })
+        return SQLitenityBundledStatement(rethrow { prepare(connection, sql) })
     }
 
     override fun close() {

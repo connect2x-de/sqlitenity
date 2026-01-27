@@ -15,6 +15,7 @@ variables:
 stages:
   - binaries
   - check
+  - docs
   - publish
 
 binaries:
@@ -38,9 +39,23 @@ check:
     when: always
   script: ./gradlew --stacktrace check
 
+docs:
+  stage: docs
+  tags: [ connect2x-mac ]
+  artifacts:
+    name: docs
+    when: always
+    paths: [ build/dokka/html ]
+    expire_in: 7d
+  environment:
+    name: docs/${CI_PIPELINE_IID}
+    url: https://connect2x.gitlab.io/-/sqlitenity/-/jobs/${CI_JOB_ID}/artifacts/build/dokka/html/index.html
+  script: ./gradlew --stacktrace dokkaGenerate
+
 publish:
   stage: publish
   tags: [ connect2x-mac ]
+  timeout: 2h
   cache:
     - paths: [ $GRADLE_USER_HOME ]
-  script: ./gradlew --stacktrace publishAllPublicationsToGitLabRepository
+  script: ./gradlew --stacktrace publish

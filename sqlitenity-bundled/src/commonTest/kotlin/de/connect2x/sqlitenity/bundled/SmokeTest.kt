@@ -15,24 +15,24 @@ class SmokeTest {
 
     val userTableQuery =
         """
-            CREATE TABLE IF NOT EXISTS users (
-                email TEXT PRIMARY KEY COLLATE NOCASE,
-                name  TEXT,
-                age   INTEGER,
-                ranking FLOAT
-            );
+        CREATE TABLE IF NOT EXISTS users (
+            email TEXT PRIMARY KEY COLLATE NOCASE,
+            name  TEXT,
+            age   INTEGER,
+            ranking FLOAT
+        );
         """
             .trimIndent()
 
     val insertUsersQuery =
         """
-            INSERT INTO users (email, name, age, ranking) VALUES (?, ?, ?, ?);
+        INSERT INTO users (email, name, age, ranking) VALUES (?, ?, ?, ?);
         """
             .trimIndent()
 
     val selectUsersQuery =
         """
-            SELECT * FROM users;
+        SELECT * FROM users;
         """
             .trimIndent()
 
@@ -48,7 +48,7 @@ class SmokeTest {
             User("myother@email.com", "", 1, 0.0),
         )
 
-    val driver = BundledSQLitenityDriver()
+    val driver = SQLitenityBundledDriver()
 
     @Test
     fun openInMemory() = deferScope {

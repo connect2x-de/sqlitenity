@@ -34,6 +34,7 @@ dependencies {
     implementation(libs.plugins.ktfmt.asLibrary())
     implementation(libs.plugins.detekt.asLibrary())
     implementation(libs.plugins.publish.asLibrary())
+    implementation(libs.plugins.dokka.asLibrary())
 }
 
 fun Provider<PluginDependency>.asLibrary() = map {

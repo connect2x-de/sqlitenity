@@ -7,13 +7,6 @@ import org.jetbrains.kotlin.gradle.plugin.mpp.KotlinNativeTarget
 import org.jetbrains.kotlin.gradle.targets.jvm.KotlinJvmTarget
 import org.jetbrains.kotlin.konan.target.KonanTarget
 
-plugins {
-    builtin(libs.plugins.kotlin.multiplatform)
-    builtin(libs.plugins.android.multiplatform.library)
-    builtin(libs.plugins.ktfmt)
-    `maven-publish`
-}
-
 kotlin {
     withAll()
     sourceSets {

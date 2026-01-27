@@ -1,3 +1,5 @@
+@file:Suppress("MissingPackageDeclaration")
+
 import de.connect2x.sqlitenity.conventions.ConventionsExtension
 import java.time.Instant
 import java.time.ZoneOffset
@@ -22,6 +24,9 @@ inline val Project.isCI: Provider<Boolean>
 
 inline val Project.isRelease: Provider<Boolean>
     get() = providers.environmentVariable("CI_COMMIT_TAG").map(String::isNotEmpty).orElse(false)
+
+inline val Project.commitSha: Provider<String>
+    get() = providers.environmentVariable("CI_COMMIT_SHA")
 
 inline val Project.environment: Provider<EnvironmentKind>
     get() =
@@ -50,8 +55,8 @@ inline val Project.formattedVersion: Provider<String>
             val version = conventions.version.get()
 
             when (environment.get()) {
-                EnvironmentKind.LOCAL -> "$version-LOCAL"
-                EnvironmentKind.DEV -> "$version-SNAPSHOT-${versionTimestamp.get()}"
+                EnvironmentKind.LOCAL -> "$version-SNAPSHOT.LOCAL"
+                EnvironmentKind.DEV -> "$version-SNAPSHOT.CI-${versionTimestamp.get()}"
                 EnvironmentKind.RELEASE -> version
             }
         }

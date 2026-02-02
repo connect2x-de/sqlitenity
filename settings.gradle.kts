@@ -51,7 +51,7 @@ conventions {
 
     android {
         compileSdk = 36
-        minSdk = 28
+        minSdk = 24
     }
 
     java {

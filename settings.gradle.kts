@@ -47,7 +47,7 @@ plugins {
 
 conventions {
     group = "de.connect2x.sqlitenity"
-    version = "0.0.5"
+    version = "0.0.6"
 
     android {
         compileSdk = 36

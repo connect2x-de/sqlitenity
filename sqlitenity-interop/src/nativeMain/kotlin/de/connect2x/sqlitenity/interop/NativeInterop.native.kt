@@ -96,4 +96,4 @@ actual typealias OutOfMemoryError = OutOfMemoryError
 
 @PublishedApi
 @OptIn(ExperimentalForeignApi::class, UnsafeNumber::class)
-internal val EmptyPtr = ByteArray(1) { 0 }.pin().addressOf(0).rawValue
+internal val EmptyPtr = ByteArray(1).pin().addressOf(0).rawValue

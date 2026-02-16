@@ -22,12 +22,14 @@ val archiveDirectory = nativeDirectory.dir("archive")
 val androidDirectory = nativeDirectory.dir("lib/android")
 val jvmDirectory = nativeDirectory.dir("lib/jvm")
 
+@Suppress("UnnecessaryFullyQualifiedName")
 kotlin.targets.withType<KotlinJvmTarget>().configureEach {
     compilations
         .named { it == "main" }
         .configureEach { defaultSourceSet.resources.srcDir(jvmDirectory) }
 }
 
+@Suppress("UnnecessaryFullyQualifiedName")
 kotlin.targets.withType<KotlinNativeTarget>().configureEach {
     compilerOptions { includeBinary(staticLibrary(konanTarget)) }
 }

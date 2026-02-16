@@ -1,6 +1,6 @@
 @file:Suppress("UnstableApiUsage", "MissingPackageDeclaration")
 
-import com.android.build.api.dsl.androidLibrary
+import com.android.build.api.dsl.KotlinMultiplatformAndroidLibraryTarget
 import org.gradle.api.NamedDomainObjectContainer
 import org.gradle.api.NamedDomainObjectProvider
 import org.gradle.api.NamedDomainObjectSet
@@ -31,7 +31,7 @@ fun KotlinMultiplatformExtension.withAndroidxCompatible() {
     iosArm64()
     iosSimulatorArm64()
 
-    androidLibrary {}
+    extensions.configure<KotlinMultiplatformAndroidLibraryTarget>("androidLibrary") {}
 }
 
 val NamedDomainObjectContainer<KotlinSourceSet>.native: NamedDomainObjectSet<KotlinSourceSet>

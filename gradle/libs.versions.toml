@@ -1,12 +1,12 @@
 [versions]
-kotlin = "2.3.10"
-android = "9.0.1"
-ktfmt = "0.25.0"
+kotlin = "2.3.21" # https://github.com/JetBrains/kotlin/releases
+android = "9.2.1"
+ktfmt = "0.26.0"
 sqlite = "2.6.2"
 androidxTestRunner = "1.7.0"
-detekt = "2.0.0-alpha.2"
+detekt = "2.0.0-alpha.3"
 publish = "0.36.0"
-dokka = "2.1.0"
+dokka = "2.2.0"
 
 [libraries]
 kotlin-test = { module = "org.jetbrains.kotlin:kotlin-test", version.ref = "kotlin" }

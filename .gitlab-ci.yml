@@ -18,9 +18,27 @@ stages:
   - docs
   - publish
 
+.if-merge-request: &if-merge-request
+  - if: $CI_MERGE_REQUEST_SOURCE_BRANCH_NAME
+
+.if-release: &if-release
+  - if: '$CI_COMMIT_TAG =~ /^v\d+\.\d+\.\d+.*/'
+
+.if-dev-release: &if-dev-release
+  - if: '$CI_COMMIT_TAG =~ /^v\d+\.\d+\.\d+.*/'
+    when: never
+  - if: $CI_PIPELINE_SOURCE == "schedule"
+    when: never
+  - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
+  - if: '$CI_COMMIT_BRANCH =~ /^v-\d+\.\d+\.\d+.*/'
+
 binaries:
   stage: binaries
   tags: [ connect2x-mac ]
+  rules:
+    - *if-merge-request
+    - *if-release
+    - *if-dev-release
   artifacts:
     paths:
       - libsqlitenity/archive
@@ -30,6 +48,8 @@ binaries:
 check:
   stage: check
   tags: [ connect2x-mac ]
+  rules:
+    - *if-merge-request
   cache:
     - paths: [ $GRADLE_USER_HOME ]
   artifacts:
@@ -42,6 +62,9 @@ check:
 docs:
   stage: docs
   tags: [ connect2x-mac ]
+  rules:
+    - *if-release
+    - *if-dev-release
   artifacts:
     name: docs
     when: always
@@ -55,6 +78,9 @@ docs:
 publish:
   stage: publish
   tags: [ connect2x-mac ]
+  rules:
+    - *if-release
+    - *if-dev-release
   timeout: 2h
   cache:
     - paths: [ $GRADLE_USER_HOME ]

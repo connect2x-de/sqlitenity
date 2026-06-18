@@ -50,7 +50,7 @@ conventions {
     version = "0.0.7"
 
     android {
-        compileSdk = 37
+        compileSdk = 36
         minSdk = 24
     }
 

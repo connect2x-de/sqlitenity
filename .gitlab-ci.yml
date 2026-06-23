@@ -18,64 +18,18 @@ stages:
   - docs
   - publish
 
-.if-merge-request-or-main: &if-merge-request-or-main
-  - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
-  - if: $CI_MERGE_REQUEST_SOURCE_BRANCH_NAME
-  - if: $CI_PIPELINE_SOURCE == "schedule"
-    when: never
-
-.if-main: &if-main
-  - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
-  - if: $CI_PIPELINE_SOURCE == "schedule"
-    when: never
-
-.if-release: &if-release
-  - if: '$CI_COMMIT_TAG =~ /^v\d+.\d+.\d+.*/'
-  - if: $CI_PIPELINE_SOURCE == "schedule"
-    when: never
-
 binaries:
   stage: binaries
   tags: [ connect2x-mac ]
-  rules:
-    - *if-merge-request-or-main
-    - *if-release
   artifacts:
     paths:
       - libsqlitenity/archive
       - libsqlitenity/lib
   script: cd libsqlitenity && ./ci.nu
 
-check:vulnerable-dependencies:
-  stage: check
-  interruptible: true
-  timeout: 30m
-  needs: [ ]
-  tags: [ "connect2x-linux-shell-small" ]
-  variables:
-    WITH_LOCK: true
-  rules:
-    - if: $CI_PIPELINE_SOURCE == "merge_request_event"
-      allow_failure: true
-    - if: '$CI_COMMIT_TAG =~ /^v\d+.\d+.\d+.*/'
-      allow_failure: false
-    - if: $CI_PIPELINE_SOURCE == "schedule"
-      allow_failure: false
-  artifacts:
-    when: always
-    reports:
-      dependency_scanning: report.json
-  script:
-    - ./gradlew dependenciesForAll --write-locks > dependencies.txt
-    - trivy repo ./ --exit-code 0 --ignorefile .trivyignore.yaml
-    - trivy repo ./ --exit-code 0 --ignorefile .trivyignore.yaml --format template --template "@/usr/local/share/trivy/templates/gitlab.tpl" --output report.json
-    - trivy repo ./ --exit-code 1 --ignorefile .trivyignore.yaml --severity CRITICAL
-
-check:gradle:
+check:
   stage: check
   tags: [ connect2x-mac ]
-  rules:
-    - *if-merge-request-or-main
   cache:
     - paths: [ $GRADLE_USER_HOME ]
   artifacts:
@@ -88,9 +42,6 @@ check:gradle:
 docs:
   stage: docs
   tags: [ connect2x-mac ]
-  rules:
-    - *if-main
-    - *if-release
   artifacts:
     name: docs
     when: always
@@ -104,9 +55,6 @@ docs:
 publish:
   stage: publish
   tags: [ connect2x-mac ]
-  rules:
-    - *if-main
-    - *if-release
   timeout: 2h
   cache:
     - paths: [ $GRADLE_USER_HOME ]

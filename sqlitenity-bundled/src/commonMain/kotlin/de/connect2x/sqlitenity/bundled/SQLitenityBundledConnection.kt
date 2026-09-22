@@ -3,6 +3,7 @@
 package de.connect2x.sqlitenity.bundled
 
 import de.connect2x.sqlitenity.api.SQLitenityConnection
+import de.connect2x.sqlitenity.api.SQLitenityException
 import de.connect2x.sqlitenity.bindings.Connection
 import de.connect2x.sqlitenity.bindings.autoCommit
 import de.connect2x.sqlitenity.bindings.close
@@ -17,18 +18,22 @@ class SQLitenityBundledConnection internal constructor(private val connection: C
 
     override val autoCommitEnabled: Boolean
         get() {
-            check(!isClosed.load())
+            throwIfClosed()
 
             return rethrow { autoCommit(connection) }
         }
 
     override fun prepare(sql: String): SQLitenityBundledStatement {
-        check(!isClosed.load())
+        throwIfClosed()
 
         return SQLitenityBundledStatement(rethrow { prepare(connection, sql) })
     }
 
     override fun close() {
         if (!isClosed.exchange(true)) close(connection)
+    }
+
+    private fun throwIfClosed() {
+        if (isClosed.load()) throw SQLitenityException.misuse("connection is closed")
     }
 }

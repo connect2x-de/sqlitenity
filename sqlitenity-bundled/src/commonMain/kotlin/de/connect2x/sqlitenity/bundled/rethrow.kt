@@ -7,5 +7,5 @@ internal inline fun <T> rethrow(crossinline block: () -> T): T =
     try {
         block()
     } catch (e: NativeException) {
-        throw SQLitenityException(e)
+        throw SQLitenityException(e.errorCode, e.errorMsg, e)
     }

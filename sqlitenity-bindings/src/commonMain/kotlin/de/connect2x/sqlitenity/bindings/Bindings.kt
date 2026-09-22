@@ -52,7 +52,7 @@ internal constructor(@PublishedApi internal val ptr: NativePointer) {
     companion object
 }
 
-class NativeException(errorCode: Int, errorMsg: String?) :
+class NativeException(val errorCode: Int, val errorMsg: String?) :
     RuntimeException(
         run {
             buildString {

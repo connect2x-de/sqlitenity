@@ -8,10 +8,10 @@ class SQLitenityCompatConnection<C : SQLitenityConnection<S>, S : SQLitenityStat
     val inner: C
 ) : SQLiteConnection {
 
-    override fun inTransaction(): Boolean = !inner.autoCommitEnabled
+    override fun inTransaction(): Boolean = rethrow { !inner.autoCommitEnabled }
 
     override fun prepare(sql: String): SQLitenityCompatStatement<S> =
-        SQLitenityCompatStatement(inner.prepare(sql))
+        SQLitenityCompatStatement(rethrow { inner.prepare(sql) })
 
-    override fun close() = inner.close()
+    override fun close() = rethrow { inner.close() }
 }

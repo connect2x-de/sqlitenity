@@ -13,6 +13,18 @@ export def download-sqlite3mc [
   download $url $sha256 $file --force=($force)
 }
 
+export def download-sqlite3mc-wasm [
+  file: path,
+  --force
+]: nothing -> nothing {
+  let config = open $CONFIG_FILE
+
+  let url = $"($config.sqlite3mc.repository)/releases/download/v($config.sqlite3mc.version)/sqlite3mc-($config.sqlite3mc.version)-sqlite-($config.sqlite3mc.sqlite3)-wasm.zip"
+  let sha256 = $config.sqlite3mc.wasm.sha256
+
+  download $url $sha256 $file --force=($force)
+}
+
 export def extract-sqlite3mc [
   file: path,
   directory: path
@@ -31,6 +43,24 @@ export def extract-sqlite3mc [
   rm -rf $directory
 
   extract $file ...($paths) --directory=($directory) --strip-components=1
+}
+
+export def extract-sqlite3mc-wasm [
+  file: path,
+  directory: path
+]: nothing -> nothing {
+  let config = open $CONFIG_FILE
+
+  let name = $"sqlite3mc-wasm-(semver-to-int $config.sqlite3mc.sqlite3)"
+
+  let sqlite3_mjs = [ $name jswasm sqlite3.mjs ] | path join
+  let sqlite3_wasm = [ $name jswasm sqlite3.wasm ] | path join
+
+  let paths = [ $sqlite3_mjs $sqlite3_wasm ]
+
+  rm -rf $directory
+
+  extract $file ...($paths) --directory=($directory) --strip-components=2
 }
 
 export def amalgamate [
@@ -269,7 +299,7 @@ def relativize-symlinks [ ]: list<path> -> nothing {
     null
 }
 
-def extract [ 
+def extract [
   file: path,
   ...paths: string,
   --directory: path = ".",
@@ -332,4 +362,9 @@ def verify-dir [
   if $actual_sha256 != $sha256 {
     error make --unspanned { msg: $"sha256 mismatch: wanted ($sha256), got ($actual_sha256)" }
   }
+}
+
+def semver-to-int [version: string]: nothing -> int {
+  let parts = ($version | split row "." | into int)
+  ($parts.0 * 1_000_000) + ($parts.1 * 10_000) + ($parts.2 * 100)
 }

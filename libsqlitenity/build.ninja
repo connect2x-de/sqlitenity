@@ -34,6 +34,10 @@ include templates/rules.ninja
 build deps/openjdk: download-jni-headers
 build deps/SQLite3MultipleCiphers.tar.gz: download-sqlite3mc
 build deps/SQLite3MultipleCiphers: extract-sqlite3mc deps/SQLite3MultipleCiphers.tar.gz
+build deps/sqlite3mc-wasm.zip: download-sqlite3mc-wasm
+build archive/wasm: extract-sqlite3mc-wasm deps/sqlite3mc-wasm.zip
+
+default archive/wasm
 
 build deps/sqlite3mc/include/sqlite3.c: amalgamate || deps/SQLite3MultipleCiphers
     script = deps/SQLite3MultipleCiphers/scripts/amalgamate.py

@@ -3,6 +3,7 @@
 package de.connect2x.sqlitenity.bundled
 
 import de.connect2x.sqlitenity.api.ColumnType
+import de.connect2x.sqlitenity.api.SQLitenityException
 import de.connect2x.sqlitenity.api.SQLitenityStatement
 import de.connect2x.sqlitenity.api.Step
 import de.connect2x.sqlitenity.bindings.ColumnType as BindingsColumnType
@@ -33,65 +34,65 @@ class SQLitenityBundledStatement internal constructor(private val statement: Sta
     private val isClosed = AtomicBoolean(false)
 
     override fun bindBlob(index: Int, value: ByteArray) {
-        checkNotClosed()
+        throwIfClosed()
         rethrow { bindBlob(statement, index, value) }
     }
 
     override fun bindDouble(index: Int, value: Double) {
-        checkNotClosed()
+        throwIfClosed()
         rethrow { bindDouble(statement, index, value) }
     }
 
     override fun bindLong(index: Int, value: Long) {
-        checkNotClosed()
+        throwIfClosed()
         rethrow { bindLong(statement, index, value) }
     }
 
     override fun bindText(index: Int, value: String) {
-        checkNotClosed()
+        throwIfClosed()
         rethrow { bindText(statement, index, value) }
     }
 
     override fun bindNull(index: Int) {
-        checkNotClosed()
+        throwIfClosed()
         rethrow { bindNull(statement, index) }
     }
 
     override fun getBlob(index: Int): ByteArray {
 
-        checkNotClosed()
+        throwIfClosed()
 
         return rethrow { columnBlob(statement, index) }
     }
 
     override fun getDouble(index: Int): Double {
-        checkNotClosed()
+        throwIfClosed()
         return rethrow { columnDouble(statement, index) }
     }
 
     override fun getLong(index: Int): Long {
-        checkNotClosed()
+        throwIfClosed()
 
         return rethrow { columnLong(statement, index) }
     }
 
     override fun getText(index: Int): String {
-        checkNotClosed()
+        throwIfClosed()
         return rethrow { columnText(statement, index) }
     }
 
     override fun getColumnCount(): Int {
-        checkNotClosed()
+        throwIfClosed()
         return rethrow { columnCount(statement) }
     }
 
     override fun getColumnName(index: Int): String {
-        checkNotClosed()
+        throwIfClosed()
         return rethrow { columnName(statement, index) }
     }
 
     override fun getColumnType(index: Int): ColumnType {
-        checkNotClosed()
+        throwIfClosed()
         return when (rethrow { columnType(statement, index) }) {
             BindingsColumnType.Integer -> ColumnType.Integer
             BindingsColumnType.Text -> ColumnType.Text
@@ -102,7 +103,7 @@ class SQLitenityBundledStatement internal constructor(private val statement: Sta
     }
 
     override fun step(): Step {
-        checkNotClosed()
+        throwIfClosed()
         return when (rethrow { step(statement) }) {
             BindingsStep.Row -> Step.Row
             BindingsStep.Done -> Step.Done
@@ -110,12 +111,12 @@ class SQLitenityBundledStatement internal constructor(private val statement: Sta
     }
 
     override fun reset() {
-        checkNotClosed()
+        throwIfClosed()
         rethrow { reset(statement) }
     }
 
     override fun clearBindings() {
-        checkNotClosed()
+        throwIfClosed()
         rethrow { clearBindings(statement) }
     }
 
@@ -123,7 +124,7 @@ class SQLitenityBundledStatement internal constructor(private val statement: Sta
         if (!isClosed.exchange(true)) rethrow { finalize(statement) }
     }
 
-    private fun checkNotClosed() {
-        check(!isClosed.load())
+    private fun throwIfClosed() {
+        if (isClosed.load()) throw SQLitenityException.misuse("statement is closed")
     }
 }

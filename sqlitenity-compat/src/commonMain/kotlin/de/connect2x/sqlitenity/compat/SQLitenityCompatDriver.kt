@@ -12,5 +12,5 @@ class SQLitenityCompatDriver<
 >(val inner: T) : SQLiteDriver {
 
     override fun open(fileName: String): SQLitenityCompatConnection<C, S> =
-        SQLitenityCompatConnection(inner.open(fileName))
+        SQLitenityCompatConnection(rethrow { inner.open(fileName) })
 }

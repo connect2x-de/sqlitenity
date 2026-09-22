@@ -37,6 +37,8 @@ include("sqlitenity-interop")
 include("sqlitenity-bindings")
 include("sqlitenity-bundled")
 include("sqlitenity-compat")
+include("sqlitenity-encrypted-driver")
+include("sqlitenity-web-worker")
 
 enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
 

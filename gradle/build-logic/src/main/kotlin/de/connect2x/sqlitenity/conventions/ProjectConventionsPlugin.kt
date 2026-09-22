@@ -60,6 +60,7 @@ class ProjectConventionsPlugin : Plugin<Project> {
 
 private fun Project.configureSubProject() {
     configureKotlinMultiplatform()
+    if (!name.startsWith("sqlitenity-web-")) configureAndroid()
     configureKtfmt()
     configureDetekt()
     configurePublishing()
@@ -67,7 +68,6 @@ private fun Project.configureSubProject() {
 
 private fun Project.configureKotlinMultiplatform() {
     apply<KotlinMultiplatformPluginWrapper>()
-    apply<KotlinMultiplatformAndroidPlugin>()
 
     extensions.configure<KotlinMultiplatformExtension> {
         jvmToolchain {
@@ -82,7 +82,21 @@ private fun Project.configureKotlinMultiplatform() {
                 }
             }
         }
+    }
+}
 
+private fun Project.configureAndroid() {
+    apply<KotlinMultiplatformAndroidPlugin>()
+
+    extensions.configure<KotlinMultiplatformAndroidComponentsExtension> {
+        finalizeDsl {
+            it.namespace = "${group}.${name.replace("-", ".")}"
+            it.compileSdk = conventions.android.compileSdk.get()
+            it.minSdk = conventions.android.minSdk.get()
+        }
+    }
+
+    extensions.configure<KotlinMultiplatformExtension> {
         targets.withType<KotlinMultiplatformAndroidLibraryTarget>().configureEach {
             withHostTest {}
             withDeviceTestBuilder { sourceSetTreeName = "test" }
@@ -90,14 +104,6 @@ private fun Project.configureKotlinMultiplatform() {
             compilations.withType<KotlinMultiplatformAndroidDeviceTestCompilation> {
                 instrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
             }
-        }
-    }
-
-    extensions.configure<KotlinMultiplatformAndroidComponentsExtension> {
-        finalizeDsl {
-            it.namespace = "${group}.${name.replace("-", ".")}"
-            it.compileSdk = conventions.android.compileSdk.get()
-            it.minSdk = conventions.android.minSdk.get()
         }
     }
 }

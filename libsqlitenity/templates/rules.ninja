@@ -30,8 +30,20 @@ rule download-sqlite3mc
   depfile = $out.d
   deps    = gcc
 
+rule download-sqlite3mc-wasm
+  command = nu -c 'use util; util download-sqlite3mc-wasm $out; util deps $out $in'
+  description = DOWNLOAD $out
+  depfile = $out.d
+  deps    = gcc
+
 rule extract-sqlite3mc
   command = nu -c 'use util; util extract-sqlite3mc $in $out; util deps $out $in'
+  description = EXTRACT $in $out
+  depfile = $out.d
+  deps    = gcc
+
+rule extract-sqlite3mc-wasm
+  command = nu -c 'use util; util extract-sqlite3mc-wasm $in $out; util deps $out $in'
   description = EXTRACT $in $out
   depfile = $out.d
   deps    = gcc

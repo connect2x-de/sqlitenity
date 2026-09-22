@@ -4,8 +4,8 @@ deps = "deps"
 
 [sqlite3mc]
 repository = "https://github.com/utelle/SQLite3MultipleCiphers"
-version = "2.3.5"
-sha256 = "4019519bb488f2c9652daee33dbbef0f2c32b2ed1120ae85cddb2ad5ff1ad3e8"
+version = "2.5.1"
+sha256 = "f4f04840cfdbc6e80237826497047422426325b47bf4976fc884e4d25308e933"
 
 [jdk]
 repository = "https://raw.githubusercontent.com/openjdk/jdk/"
